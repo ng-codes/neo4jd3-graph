@@ -8,8 +8,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.tsx\"",
     "lint": "tslint -p tsconfig.json --fix",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run lint"
+    "prepare": "npm run build"
   },
   "keywords": [
     "neo4j",
