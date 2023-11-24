@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "lib": ["es6", "dom"],
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "jsx": "react",
+    "allowJs": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "testfolder/**/*.ts", "testfolder/**/*.tsx"],
+  "exclude": ["node_modules", "**/__tests__/*"]
+}
