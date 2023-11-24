@@ -91,7 +91,7 @@ function Neo4jD3() {
     return container.append('div').attr('class', 'neo4jd3-info');
   }
   function appendInfoElement(cls?: any, isNode?: any, property?: any, value?: any) {
-    let elem = info.append('a');
+    const elem = info.append('a');
     elem
       .attr('href', '#')
       .attr('class', cls)
@@ -183,7 +183,7 @@ function Neo4jD3() {
       .call(d3.drag().on('start', dragStarted).on('drag', dragged).on('end', dragEnded));
   }
   function appendNodeToGraph() {
-    let n = appendNode();
+    const n = appendNode();
     appendRingToNode(n);
     appendOutlineToNode(n);
     if (options.icons) {
@@ -238,12 +238,12 @@ function Neo4jD3() {
         return icon(d) ? parseInt(Math.round(options.nodeRadius * 0.32).toString()) + 'px' : '4px';
       })
       .html(function (d) {
-        let _icon = icon(d);
+        const _icon = icon(d);
         return _icon ? '&#x' + _icon : d.id;
       });
   }
   function appendRandomDataToNode(d, maxNodesToGenerate) {
-    let data = randomD3Data(d, maxNodesToGenerate);
+    const data = randomD3Data(d, maxNodesToGenerate);
     updateWithNeo4jData(data);
   }
   function appendRelationship() {
@@ -281,7 +281,7 @@ function Neo4jD3() {
       });
   }
   function appendRelationshipToGraph() {
-    let relationship = appendRelationship(),
+    const relationship = appendRelationship(),
       text = appendTextToRelationship(relationship),
       outline = appendOutlineToRelationship(relationship),
       overlay = appendOverlayToRelationship(relationship);
@@ -313,7 +313,7 @@ function Neo4jD3() {
   }
 
   function contains(array, id) {
-    let filter = array.filter(function (elem) {
+    const filter = array.filter(function (elem) {
       return elem.id === id;
     });
     return filter.length > 0;
@@ -346,7 +346,7 @@ function Neo4jD3() {
     }
   }
   function extend(obj1, obj2) {
-    let obj = {};
+    const obj = {};
     merge(obj, obj1);
     merge(obj, obj2);
     return obj;
@@ -426,7 +426,7 @@ function Neo4jD3() {
   }
   function initIconMap() {
     Object.keys(options.iconMap).forEach(function (key, index) {
-      let keys = key.split(','),
+      const keys = key.split(','),
         value = options.iconMap[key];
       keys.forEach(function (key) {
         options.iconMap[key] = value;
@@ -447,7 +447,7 @@ function Neo4jD3() {
     }
   }
   function initSimulation() {
-    let simulation = d3.forceSimulation().velocityDecay(0.8);
+    const simulation = d3.forceSimulation().velocityDecay(0.8);
     simulation
       //   .force('x', 0.00111)
       //   .force('y', 0.000000001)
@@ -506,7 +506,7 @@ function Neo4jD3() {
     });
   }
   function neo4jDataToD3Data(data) {
-    let graph = {
+    const graph = {
       nodes: [],
       relationships: [],
     };
@@ -593,11 +593,11 @@ function Neo4jD3() {
     return data;
   }
   function randomLabel() {
-    let icons = Object.keys(options.iconMap);
+    const icons = Object.keys(options.iconMap);
     return icons[(icons.length * Math.random()) << 0];
   }
   function rotate(cx, cy, x, y, angle) {
-    let radians = (Math.PI / 180) * angle,
+    const radians = (Math.PI / 180) * angle,
       cos = Math.cos(radians),
       sin = Math.sin(radians),
       nx = cos * (x - cx) + sin * (y - cy) + cx,
@@ -635,7 +635,7 @@ function Neo4jD3() {
   function tickRelationships() {
     if (relationship) {
       relationship.attr('transform', function (d) {
-        let angle = rotation(d.source, d.target);
+        const angle = rotation(d.source, d.target);
         return 'translate(' + d.source.x + ', ' + d.source.y + ') rotate(' + angle + ')';
       });
       tickRelationshipsTexts();
@@ -645,13 +645,13 @@ function Neo4jD3() {
   }
   function tickRelationshipsOutlines() {
     relationship.each(function (relationship) {
-      let rel = d3.select(this),
+      const rel = d3.select(this),
         outline = rel.select('.outline'),
         text: any = rel.select('.text'),
         bbox = text.node().getBBox(),
         padding = 3;
       outline.attr('d', function (d: any) {
-        let center = { x: 0, y: 0 },
+        const center = { x: 0, y: 0 },
           angle = rotation(d.source, d.target),
           textBoundingBox = text.node().getBBox(),
           textPadding = 5,
@@ -776,7 +776,7 @@ function Neo4jD3() {
 
   function tickRelationshipsOverlays() {
     relationshipOverlay.attr('d', function (d) {
-      let center = { x: 0, y: 0 },
+      const center = { x: 0, y: 0 },
         angle = rotation(d.source, d.target),
         n1 = unitaryNormalVector(d.source, d.target),
         n = unitaryNormalVector(d.source, d.target, 50),
@@ -816,7 +816,7 @@ function Neo4jD3() {
 
   function tickRelationshipsTexts() {
     relationshipText.attr('transform', function (d) {
-      let angle = (rotation(d.source, d.target) + 360) % 360,
+      const angle = (rotation(d.source, d.target) + 360) % 360,
         mirror = angle > 90 && angle < 270,
         center = { x: 0, y: 0 },
         n = unitaryNormalVector(d.source, d.target),
@@ -872,7 +872,7 @@ function Neo4jD3() {
     updateNodesAndRelationships(d3Data.nodes, d3Data.relationships);
   }
   function updateWithNeo4jData(neo4jData) {
-    let d3Data = neo4jDataToD3Data(neo4jData);
+    const d3Data = neo4jDataToD3Data(neo4jData);
     updateWithD3Data(d3Data);
   }
   function updateInfo(d) {
@@ -892,7 +892,7 @@ function Neo4jD3() {
     node = svgNodes.selectAll('.node').data(nodes, function (d) {
       return d.id;
     });
-    let nodeEnter = appendNodeToGraph();
+    const nodeEnter = appendNodeToGraph();
     node = nodeEnter.merge(node);
   }
   function updateNodesAndRelationships(n, r) {
@@ -906,7 +906,7 @@ function Neo4jD3() {
     relationship = svgRelationships.selectAll('.relationship').data(relationships, function (d) {
       return d.id;
     });
-    let relationshipEnter = appendRelationshipToGraph();
+    const relationshipEnter = appendRelationshipToGraph();
     relationship = relationshipEnter.relationship.merge(relationship);
     relationshipOutline = svg.selectAll('.relationship .outline');
     relationshipOutline = relationshipEnter.outline.merge(relationshipOutline);
@@ -919,7 +919,7 @@ function Neo4jD3() {
     return VERSION;
   }
   function zoomFit(transitionDuration) {
-    let bounds = svg.node().getBBox(),
+    const bounds = svg.node().getBBox(),
       parent = svg.node().parentElement.parentElement,
       fullWidth = parent && parent.clientWidth ? parent.clientWidth : '100vw',
       fullHeight = parent && parent.clientHeight ? parent.clientHeight : '100vh',
