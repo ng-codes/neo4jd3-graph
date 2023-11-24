@@ -144,4 +144,4 @@ export default App;
 
 Contributions are always welcome!
 
-See `contributing.md` for ways to get started.
+See [contributing.md](https://github.com/ng-codes/neo4jd3-graph/blob/main/contributing.md) for ways to get started.
