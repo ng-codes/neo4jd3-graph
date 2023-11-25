@@ -8,7 +8,7 @@ This project and everyone participating in it is governed by the Code of Conduct
 
 Please follow these steps to have your contribution considered by the maintainers:
 
-- Follow all instructions in the [template](https://github.com/ng-codes/neo4jd3-graph.git/blob/master/.github/PULL_REQUEST_TEMPLATE.md)
+- Follow all instructions in the [template](https://github.com/ng-codes/neo4jd3-graph/blob/main/.github/PULL_REQUEST_TEMPLATE.md)
 - Follow the Style guidelines
 
 # Style guidelines
