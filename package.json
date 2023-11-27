@@ -5,10 +5,12 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json",
-    "build": "tsc",
+    "build": "npm run build-css && tsc",
     "format": "prettier --write \"src/**/*.tsx\"",
     "lint": "tslint -p tsconfig.json --fix",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "local-build": "npm run build && npm link",
+    "build-css": "node-sass src/styles -o lib/styles"
   },
   "keywords": [
     "neo4j",
@@ -37,6 +39,7 @@
   },
   "dependencies": {
     "d3": "^4.2.1",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "node-sass": "^9.0.0"
   }
 }

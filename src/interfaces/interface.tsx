@@ -683,6 +683,8 @@ export interface Neo4jD3Options {
   onNodeDoubleClick?: (d: any) => void;
   onNodeMouseEnter?: (d: any) => void;
   onNodeMouseLeave?: (d: any) => void;
+  onRelationshipMouseEnter?: (d: any) => void;
+  onRelationshipMouseLeave?: (d: any) => void;
   onNodeDragEnd?: (d: any) => void;
   onNodeDragStart?: (d: any) => void;
   onRelationshipDoubleClick?: (d: any) => void;

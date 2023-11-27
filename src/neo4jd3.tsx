@@ -1,7 +1,8 @@
 // @ts-ignore
 import * as d3 from 'd3';
-
-import { Neo4jD3Options, colors, fontAwesomeIcons } from './interface';
+import './styles/styles.css';
+import 'font-awesome/css/font-awesome.css';
+import { Neo4jD3Options, colors, fontAwesomeIcons } from './interfaces/interface';
 
 function Neo4jD3() {
   let container: any,
@@ -37,7 +38,7 @@ function Neo4jD3() {
       neo4jDataUrl: undefined,
       nodeOutlineFillColor: undefined,
       nodeRadius: 25,
-      relationshipColor: '#a5abb6',
+      relationshipColor: 'red',
       zoomFit: false,
     },
     VERSION = '1.0.1';
@@ -91,13 +92,27 @@ function Neo4jD3() {
     return container.append('div').attr('class', 'neo4jd3-info');
   }
   function appendInfoElement(cls?: any, isNode?: any, property?: any, value?: any) {
-    const elem = info.append('a');
-    elem
-      .attr('href', '#')
-      .attr('class', cls)
-      .html('<strong>' + property + '</strong>' + (value ? ': ' + value : ''));
+    const table = info.append('table').style('border-collapse', 'collapse').style('width', '100%');
+
+    const row = table.append('tr');
     if (!value) {
-      elem
+      row
+        .append('td')
+        .attr('class', cls)
+        .style('border', '1px solid #dddddd')
+        .style('padding', '8px')
+        .style('width', '200px')
+        .style('text-wrap', 'no-wrap')
+        .html('<strong>Name</strong>');
+
+      row
+        .append('td')
+        .style('border', '1px solid #dddddd')
+        .style('padding', '8px')
+        .style('width', 'auto')
+        .style('text-wrap', 'no-wrap')
+        .html('<strong>' + property + '</strong>');
+      row
         .style('background-color', function (d) {
           return options.nodeOutlineFillColor
             ? options.nodeOutlineFillColor
@@ -115,6 +130,23 @@ function Neo4jD3() {
         .style('color', function (d) {
           return options.nodeOutlineFillColor ? class2darkenColor(options.nodeOutlineFillColor) : '#fff';
         });
+    } else {
+      row
+        .append('td')
+        .attr('class', cls)
+        .style('border', '1px solid #dddddd')
+        .style('padding', '8px')
+        .style('width', '200px')
+        .style('text-wrap', 'no-wrap')
+        .html('<strong>' + property + '</strong>');
+
+      row
+        .append('td')
+        .style('border', '1px solid #dddddd')
+        .style('padding', '8px')
+        .style('width', 'auto')
+        .style('text-wrap', 'no-wrap')
+        .html('<strong>' + value + '</strong>');
     }
   }
   function appendInfoElementClass(cls, node) {
@@ -260,6 +292,17 @@ function Neo4jD3() {
         if (info) {
           updateInfo(d);
         }
+        if (typeof options.onRelationshipMouseEnter === 'function') {
+          options.onRelationshipMouseEnter(d);
+        }
+      })
+      .on('mouseleave', function (d) {
+        if (info) {
+          clearInfo(d);
+        }
+        if (typeof options.onRelationshipMouseLeave === 'function') {
+          options.onRelationshipMouseLeave(d);
+        }
       });
   }
   function appendOutlineToRelationship(r) {
@@ -295,7 +338,6 @@ function Neo4jD3() {
   function class2color(cls) {
     let color = classes2colors[cls];
     if (!color) {
-      //            color = options.colors[Math.min(numClasses, options.colors.length - 1)];
       color = options.colors[numClasses % options.colors.length];
       classes2colors[cls] = color;
       numClasses++;
@@ -485,11 +527,13 @@ function Neo4jD3() {
       });
     return simulation;
   }
+
   function loadNeo4jData() {
     nodes = [];
     relationships = [];
     updateWithNeo4jData(options.neo4jData);
   }
+
   function loadNeo4jDataFromUrl(neo4jDataUrl) {
     nodes = [];
     relationships = [];
@@ -838,19 +882,6 @@ function Neo4jD3() {
     s += ')';
     return s;
   }
-  // function unitaryNormalVector(source?: any, target?: any, newLength?: any) {
-  //     var center = { x: 0, y: 0 },
-  //         vector = unitaryVector(source, target, newLength);
-  //     return rotatePoint(center, vector, 90);
-  // }
-  // function unitaryVector(source?: any, target?: any, newLength?: any) {
-  //     var length =
-  //         Math.sqrt(Math.pow(target.x - source.x, 2) + Math.pow(target.y - source.y, 2)) / Math.sqrt(newLength || 1);
-  //     return {
-  //         x: (target.x - source.x) / length,
-  //         y: (target.y - source.y) / length,
-  //     };
-  // }
 
   function unitaryNormalVector(source: any, target: any, newLength?: any) {
     const center = { x: 0, y: 0 };
@@ -882,9 +913,9 @@ function Neo4jD3() {
     } else {
       appendInfoElementRelationship('class', d.type);
     }
-    appendInfoElementProperty('property', '&lt;id&gt;', d.id);
+    appendInfoElementProperty('property', 'id', d.id);
     Object.keys(d.properties).forEach(function (property) {
-      appendInfoElementProperty('property', property, JSON.stringify(d.properties[property]));
+      appendInfoElementProperty('property', property, d.properties[property]);
     });
   }
   function updateNodes(n) {
@@ -927,16 +958,13 @@ function Neo4jD3() {
       height = bounds.height,
       midX = bounds.x + width / 2,
       midY = bounds.y + height / 2;
-    // console.log(fullWidth, fullHeight)
     if (width === 0 || height === 0) {
-      return; // nothing to fit
+      return;
     }
     svgScale = 0.85 / Math.max(width / fullWidth, height / fullHeight);
     svgTranslate = [fullWidth / 2 - svgScale * midX, fullHeight / 2 - svgScale * midY];
     svg.attr('transform', 'translate(' + svgTranslate[0] + ', ' + svgTranslate[1] + ') scale(' + svgScale + ')');
-    //        smoothTransform(svgTranslate, svgScale);
   }
-  // init(_selector, _options);
   return {
     appendRandomDataToNode,
     neo4jDataToD3Data,
